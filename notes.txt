@@ -1,0 +1,15 @@
+Camera Calibration
+Distortion Correction
+Colour and Gradient Thresholding
+Perspective Tranform
+
+
+Camera Calibration
+The calibration images in the lesson exercise were taken with a different camera setting and a different chessboard pattern than the calibration images for the project. You need to set your chessboard size to 9x6 for the project instead of 8x6 as in the lesson.
+
+Sanity Check
+Ok, so your algorithm found some lines. Before moving on, you should check that the detection makes sense. To confirm that your detected lane lines are real, you might consider:
+
+Checking that they have similar curvature
+Checking that they are separated by approximately the right distance horizontally
+Checking that they are roughly parallel
