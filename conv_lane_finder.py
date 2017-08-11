@@ -3,13 +3,21 @@ import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 import glob
 import cv2
+from colourfiltering import get_combined_binary
 
 # Read in a thresholded image
-warped = mpimg.imread('warped_example.jpg')
+warped = mpimg.imread('test_images/straight_lines1.jpg')
+warped = get_combined_binary(warped)
+
+# TODO REINSTATE
+# plt.imshow(warped)
+# plt.title('conv_lane_finder')
+# plt.show()
+
 # window settings
 window_width = 50
 window_height = 80  # Break image into 9 vertical layers since image height is 720
-margin = 100  # How much to slide left and right for searching
+margin = 50  # How much to slide left and right for searching
 
 
 def window_mask(width, height, img_ref, center, level):
@@ -58,37 +66,41 @@ def find_window_centroids(image, window_width, window_height, margin):
     return window_centroids
 
 
-window_centroids = find_window_centroids(warped, window_width, window_height, margin)
+def find_the_lanes(img):
+    window_centroids = find_window_centroids(img, window_width, window_height, margin)
+    # If we found any window centers
+    if len(window_centroids) > 0:
 
-# If we found any window centers
-if len(window_centroids) > 0:
+        # Points used to draw all the left and right windows
+        l_points = np.zeros_like(img)
+        r_points = np.zeros_like(img)
 
-    # Points used to draw all the left and right windows
-    l_points = np.zeros_like(warped)
-    r_points = np.zeros_like(warped)
+        # Go through each level and draw the windows
+        for level in range(0, len(window_centroids)):
+            # Window_mask is a function to draw window areas
+            l_mask = window_mask(window_width, window_height, img, window_centroids[level][0], level)
+            r_mask = window_mask(window_width, window_height, img, window_centroids[level][1], level)
+            # Add graphic points from window mask here to total pixels found
+            l_points[(l_points == 255) | ((l_mask == 1))] = 255
+            r_points[(r_points == 255) | ((r_mask == 1))] = 255
 
-    # Go through each level and draw the windows
-    for level in range(0, len(window_centroids)):
-        # Window_mask is a function to draw window areas
-        l_mask = window_mask(window_width, window_height, warped, window_centroids[level][0], level)
-        r_mask = window_mask(window_width, window_height, warped, window_centroids[level][1], level)
-        # Add graphic points from window mask here to total pixels found
-        l_points[(l_points == 255) | ((l_mask == 1))] = 255
-        r_points[(r_points == 255) | ((r_mask == 1))] = 255
+        # Draw the results
+        template = np.array(r_points + l_points, np.uint8)  # add both left and right window pixels together
+        zero_channel = np.zeros_like(template)  # create a zero color channel
+        template = np.array(cv2.merge((zero_channel, template, zero_channel)), np.uint8)  # make window pixels green
+        warpage = np.array(cv2.merge((img, img, img)),
+                           np.uint8)  # making the original road pixels 3 color channels
+        output = cv2.addWeighted(warpage, 1, template, 0.5, 0.0)  # overlay the orignal road image with window results
 
-    # Draw the results
-    template = np.array(r_points + l_points, np.uint8)  # add both left and right window pixels together
-    zero_channel = np.zeros_like(template)  # create a zero color channel
-    template = np.array(cv2.merge((zero_channel, template, zero_channel)), np.uint8)  # make window pixels green
-    warpage = np.array(cv2.merge((warped, warped, warped)),
-                       np.uint8)  # making the original road pixels 3 color channels
-    output = cv2.addWeighted(warpage, 1, template, 0.5, 0.0)  # overlay the orignal road image with window results
+    # If no window centers found, just display orginal road image
+    else:
+        output = np.array(cv2.merge((img, img, img)), np.uint8)
 
-# If no window centers found, just display orginal road image
-else:
-    output = np.array(cv2.merge((warped, warped, warped)), np.uint8)
+    # Display the final results
+    #TODO REINSTATE
+    # plt.imshow(output)
+    # plt.title('window fitting results')
+    # plt.show()
 
-# Display the final results
-plt.imshow(output)
-plt.title('window fitting results')
-plt.show()
+
+#find_the_lanes()

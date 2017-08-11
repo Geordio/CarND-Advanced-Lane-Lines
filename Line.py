@@ -1,5 +1,11 @@
+import numpy as np
+
+
 # Define a class to receive the characteristics of each line detection
 class Line():
+
+    # lines = []
+
     def __init__(self):
         # was the line detected in the last iteration?
         self.detected = False
@@ -21,3 +27,13 @@ class Line():
         self.allx = None
         #y values for detected line pixels
         self.ally = None
+
+        self.lines = []
+
+
+
+    def addline(self, newline):
+        self.lines.append(newline)
+
+
+

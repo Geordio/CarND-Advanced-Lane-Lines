@@ -1,5 +1,6 @@
 Camera Calibration
 Distortion Correction
+
 Colour and Gradient Thresholding
 Perspective Tranform
 
@@ -13,3 +14,14 @@ Ok, so your algorithm found some lines. Before moving on, you should check that 
 Checking that they have similar curvature
 Checking that they are separated by approximately the right distance horizontally
 Checking that they are roughly parallel
+
+4 points
+620 440
+670 440
+230 680
+1080 680
+
+remember that matplot uses rgb
+cv2 uses bgr
+
+1280 x 720

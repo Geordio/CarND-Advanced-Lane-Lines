@@ -1,7 +1,27 @@
 import cv2
 import numpy as np
+import pickle
+import numpy as np
+import cv2
+import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
 
-def abs_sobel_thresh(img, orient='x', thresh_min=0, thresh_max=255):
+def plot_figure(array_to_plot, labels_array, n_rows, n_columns, figuresize=(64,64),colourmap='gray'):
+    fig, axes = plt.subplots( n_rows, n_columns,figsize=figuresize)
+    axes = axes.ravel()
+
+    for i in range(len(array_to_plot)):
+        print('i {}'.format(i))
+        print('title {}'.format(labels_array[i]))
+        axes[i].imshow(array_to_plot[i], cmap=colourmap)
+        axes[i].set_title(labels_array[i])
+        axes[i].axis('off')
+
+    # TODO Reinstate
+    # plt.tight_layout()
+    # plt.show()
+
+def abs_sobel_thresh(img, orient='x', sobel_kernel=3, thresh=(0, 255)):
     # Apply the following steps to img
     # 1) Convert to grayscale
     # 2) Take the derivative in x or y given orient = 'x' or 'y'
@@ -23,6 +43,9 @@ def abs_sobel_thresh(img, orient='x', thresh_min=0, thresh_max=255):
 
     # thresh_min = 20
     # thresh_max = 100
+    thresh_min = thresh[0]
+    thresh_max = thresh[1]
+
     sbinary = np.zeros_like(scaled_sobel)
     sbinary[(scaled_sobel >= thresh_min) & (scaled_sobel <= thresh_max)] = 1
     # plt.imshow(sxbinary, cmap='gray')
@@ -63,12 +86,8 @@ def hls_select(img, thresh=(0, 255)):
     return binary_output
 
 
-import numpy as np
-import cv2
-import matplotlib.pyplot as plt
-import matplotlib.image as mpimg
 
-image = mpimg.imread('bridge_shadow.jpg')
+image = mpimg.imread('test_images/straight_lines1.jpg')
 
 
 # Edit this function to create your own pipeline.
@@ -97,15 +116,15 @@ def pipeline(img, s_thresh=(170, 230), sx_thresh=(30, 100)):
     return color_binary
 
 
-result = pipeline(image)
+# result = pipeline(image)
 
 # Plot the result
-f, (ax1, ax2) = plt.subplots(1, 2, figsize=(24, 9))
-f.tight_layout()
+# f, (ax1, ax2) = plt.subplots(1, 2, figsize=(24, 9))
+# f.tight_layout()
 
-ax1.imshow(image)
-ax1.set_title('Original Image', fontsize=40)
-
-ax2.imshow(result)
-ax2.set_title('Pipeline Result', fontsize=40)
-plt.subplots_adjust(left=0., right=1, top=0.9, bottom=0.)
+# ax1.imshow(image)
+# ax1.set_title('Original Image', fontsize=40)
+#
+# ax2.imshow(result)
+# ax2.set_title('Pipeline Result', fontsize=40)
+# plt.subplots_adjust(left=0., right=1, top=0.9, bottom=0.)
