@@ -89,7 +89,9 @@ Below is an image marked up with the source points (magenta) and the destination
 ![undistorted image](https://github.com/Geordio/CarND-Advanced-Lane-Lines/blob/master/output_images/src_dst.png)
 
 Below is a sample birdseye transform. Note that this image is of a slight left bend so the lines are not quite vertical.
+
 ![undistorted image](https://github.com/Geordio/CarND-Advanced-Lane-Lines/blob/master/output_images/birdseye_transform.png)
+
 Note that as part of this tranform function, I calculate the inverse transform matrix and store it for use later.
 
 
@@ -99,6 +101,7 @@ Note that as part of this tranform function, I calculate the inverse transform m
 I used trial and error to establish the best method for picking out the pixels relavent to the lane lines.
 
 I tried the following colour spaces:
+
 -RBG
 -HLS
 -HSV
