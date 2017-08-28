@@ -270,13 +270,13 @@ Or as implemented in my calculate_radius_real method:
         rad = ((1 + (2 * fit_cr[0] * y_eval * self.ym_per_pix + fit_cr[1]) ** 2) ** 1.5) / np.absolute(2 * fit_cr[0])
 
 
-Once the radius is calculated, the Frame class averages the radius of teh left and right lines together, which is then used as the overal radius.
+Once the radius is calculated, the Frame class averages the radius of the left and right lines together, which is then used as the overal radius.
 
 ### Vehicle position
 
 The vehicle position was detected using the get_car_position method in the Frame class
 
-This method assumes taht the camera is mounted in the car centre line, hence the centre of the car is the horizontal centre of the image.
+This method assumes that the camera is mounted in the car centre line, hence the centre of the car is the horizontal centre of the image.
 The centre of the lane is detected my adding the x positions at of the lines nearest the car together and dividing by 2.
 The position of the car relative to the lane centre can be determined by substitution. Note that the distnace is converted from pixels to metres using the metres per pixel value as before.
 
@@ -293,10 +293,24 @@ At this stage we have a birdseye representation of the lines. We use the opencv 
 
 Finally we merge this line view with the original camera view using the opencv addWeighted method.
 
-* Output visual display of the lane boundaries and numerical estimation of lane curvature and vehicle position.
+Below is a sample output.
+Note that the left hand lane is not as visible as the right as the weighting of the lines is less that that of the underlying image. (As the righthand lane is dashed, it is easier to see than on the continuous left hand lane.)/
+In hindsight I should have increased the weight.
+
+![annontated output](https://github.com/Geordio/CarND-Advanced-Lane-Lines/blob/master/output_images/sample_aoutput.jpg)
+
+
+
+##Output visual display of the lane boundaries and numerical estimation of lane curvature and vehicle position.
 
 At this stage we have a marked up camera image with the lane marking in blue and the lane itself in green. In order to annotate the image with the radius and vehicle position information, the annotate_image method is used in the Frame class.
 This method takes upto 3 strings as an input and uses the opencv puttext method to write the data to the image.
+
+Below is a sample output:
+
+![annontated output](https://github.com/Geordio/CarND-Advanced-Lane-Lines/blob/master/output_images/sample_annotated_output.jpg)
+
+
 
 
 ## Discussion: Video processing
