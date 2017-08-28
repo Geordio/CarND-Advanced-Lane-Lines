@@ -17,6 +17,10 @@ The goals / steps of this project are the following:
 * Warp the detected lane boundaries back onto the original image.
 * Output visual display of the lane boundaries and numerical estimation of lane curvature and vehicle position.
 
+My Project Submission
+---
+This readme file provides the report writeup for this project.
+
 My project solution consists of the following files
 
 
@@ -24,16 +28,19 @@ My project solution consists of the following files
 | ------------- |:-------------:|
 | calibration.py      | handles the camera calibration and undistortion |
 | colourfiltering.py | handles the colour filtering to create binary images, and alos the gradient thresholding     |
-| Frame | cordinates the processing of images other than colour thresholding. Frame is also responsible cooridinating the undistortion, extraction oof pixel representations of lines, and creating output images      |
-|Line | the Line class stores parameters relavent to a Lane Line, and also checks line plausibility, averages line quadratic representation and calculates radius
+| Frame.py | The Frame class cordinates the processing of images other than colour thresholding. Frame is also responsible cooridinating the undistortion, extraction oof pixel representations of lines, and creating output images      |
+|Line.py | the Line class stores parameters relavent to a Lane Line, and also checks line plausibility, averages line quadratic representation and calculates radius
 |pipeline.py| defines the main pipeline sequence|
 |util.py| provides some helper functions such as to plot figures|
 
 
+## Introduction
 
 In my project, I actually swapped the color transform and perspective transform. I.e I performed the perspective transform first, then the colour transform. The reason for this was that was that this gives a colour image with the road marking close to vertical, and is better for using the a histogram to measure the 'noise' when performing the colour transforms.
 
-##Camera Calibration
+In hindsight I spent to much time and effort trying to make my solution object oriented, which resulted in duplication or variables, lots of refactoring, but little benefit.
+
+## Camera Calibration
 
 The first step of my pipeline is to calibrate the camera.
 My implementation was based upon the example in the course material.
@@ -41,6 +48,7 @@ My implementation was based upon the example in the course material.
 The method iterates though the provided calibration images, finding the chessboard corners ( expecting 9 x 6 interal points where 2 black squares intercept). This give me an array of points that can be used for calibration.
 After finding all the corners, I drew them to visualise.
 Below are 2 samples
+
 ![corners found](https://github.com/Geordio/CarND-Advanced-Lane-Lines/blob/master/output_images/corners_found1.jpg)
 ![corners found](https://github.com/Geordio/CarND-Advanced-Lane-Lines/blob/master/output_images/corners_found2.jpg)
 
