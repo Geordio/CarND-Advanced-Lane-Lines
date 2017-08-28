@@ -133,14 +133,7 @@ def filter_white_yellow_hsv(img):
     img = cv2.cvtColor(img, cv2.COLOR_RGB2HSV)
     v_mean(img)
     s_mean(img)
-    # upper_thres_yell = np.uint8([10,50,100])
-    # lower_thres_yell = np.uint8([100,255,255])
-    # upper_thres_white = np.uint8([[0, 0, 200]])
-    # lower_thres_white = np.uint8([255, 255, 255])
 
-    #TODO reinstate
-    # plt.imshow(img)
-    # plt.show()
     if v_mean(img) < 150:
         print('MEAN TRUE')
         upper_thres_yell = np.uint8([10,50,100])
@@ -154,25 +147,12 @@ def filter_white_yellow_hsv(img):
         upper_thres_white = np.uint8([[0, 0, 220]])
         lower_thres_white = np.uint8([255, 255, 255])
     yellows = cv2.inRange(img, upper_thres_yell, lower_thres_yell)
-
-    # plt.imshow(yellows)
-    # plt.title('yellow')
-    # plt.show()
-    upper_thres = np.uint8([[0,0,210]])
-    lower_thres = np.uint8([255,255,255])
-    # upper_thres = np.uint8([[0,0,220]])
-    # lower_thres = np.uint8([255,255,255])
     whites = cv2.inRange(img, upper_thres_white, lower_thres_white)
 
-    # plt.imshow(whites)
-    # plt.title('whites')
-    # plt.show()
-    yellows_or_whites = yellows | whites
     img = cv2.bitwise_and(img, img, mask=yellows | whites)
     # ret, img = cv2.threshold(img, 0, 255, cv2.THRESH_BINARY)
 
     img[(img > 0)] = 1
-
     return img[:, :, 0]
 
 

@@ -97,6 +97,8 @@ Note that as part of this tranform function, I calculate the inverse transform m
 
 ## Apply colour transformations and gradients
 
+### Colour Thresholds
+
 I used trial and error to establish the best method for picking out the pixels relavent to the lane lines.
 
 I tried the following colour spaces:
@@ -132,9 +134,9 @@ I found that this method had problems coping with the sections of the project_vi
 To try to overcome this, I looked at alternative methods, including filtering on the white and yellow colour ranges of the HSV space.
 This is defined in colorfiltering.py as filter_white_yellow_hsv.
 This method uses the opencv
-This worked well on most sections of road, but struggled with areas of shade. In order to attempt to overcome the issue of shade and sections where the road surface is lighter, I implement 2 sets of thresgolds, and swithc between the 2 is the S channel has a mean value of greater or less than 120.
+This worked well on most sections of road, but struggled with areas of shade. In order to attempt to overcome the issue of shade and sections where the road surface is lighter, I implement 2 sets of thresholds, and swithc between the 2 is the S channel has a mean value of greater or less than 120.
+With some more work, I would have liked to have come up with a suitable formula for deriving the required tresholds from the mean intensity on a particular colourspace channel.
 
-# create a binary representation by filtering of the V channel of HSV colourspace
 def filter_white_yellow_hsv(img):
 
     img = cv2.cvtColor(img, cv2.COLOR_RGB2HSV)
@@ -165,19 +167,20 @@ def filter_white_yellow_hsv(img):
 
 Note, that to compare the performance, I produced a debug output video that shows the performance, this can be viewed in output_project_video_debug.mp4
 A sample of this output is shown below:
+
 ![debug sample](https://github.com/Geordio/CarND-Advanced-Lane-Lines/blob/master/output_images/test_str_lines1.jpg)
 
 
-In addition, my experimental methods 'coloumap_sandbox', 'filter_hls' and 'filter_white_yellow_hls2' are defiend in colourfiltering.py
+In addition, my experimental methods 'colourmap_sandbox', 'filter_hls' and 'filter_white_yellow_hls2' are defiend in colourfiltering.py
 
+### Gradient
 Regarding the gradient of the pixel intensities, I experimented with Sobel, but found that it was not a useful addition to the colour filtering.
 Below is an example if the output of the sobel function. The sobel function is defined in colourfiltering as the abs_sobel_thresh method which called by get_combined_binary()
-
 
 Ulitmately I decided against using the sobel as I found that on some sections (such as the test1 image, it created additional noise that caused spurious results. See output from test.jpg image below
 Sobel noise:
 
-![undistorted image](https://github.com/Geordio/CarND-Advanced-Lane-Lines/blob/master/output_images/combined sobel noise.png)
+![undistorted image](https://github.com/Geordio/CarND-Advanced-Lane-Lines/blob/master/output_images/combined_sobel_noise.png)
 
 And the subsequent output
 ![undistorted image](https://github.com/Geordio/CarND-Advanced-Lane-Lines/blob/master/output_images/test1_sobel_going_wrong.jpg)
