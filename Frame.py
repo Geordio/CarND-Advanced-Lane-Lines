@@ -93,18 +93,14 @@ class Frame():
 
 
 
-# prcoess an image and return the pixels that have been detected as potential lines
+# process an image and return the pixels that have been detected as potential lines
+# this method makes multiple other function calls in order to undistort the camera, colour filter and finally
+# return pixels associated with the lane markings
     def get_raw_line_pixels(self, image):
         self.image_undistorted = undistort(image, self.mtx, self.dist)
         self.ploty = np.linspace(0, self.image_undistorted.shape[0] - 1, self.image_undistorted.shape[0])
 
         self.image_birdseye, self.M, self.Minv = self.get_birdseye(self.image_undistorted)
-
-        # TODO reinstate
-        # plt.imshow(image_wip)
-        # plt.title('pipeline: birdseye')
-
-        # self.image_hls_bin = get_combined_binary(self.image_birdseye)
 
         self.image_hsv_bin = filter_white_yellow_hsv(self.image_birdseye)
         self.image_hls_bin = filter_hls(self.image_birdseye)
@@ -530,13 +526,13 @@ class Frame():
         plt.show()
 
         #TODO REINSTATE FOR VISUALISATION
-        # plt.imshow(result)
-        # plt.title('polylines')
-        # plt.plot(left_fitx, ploty, color='yellow')
-        # plt.plot(right_fitx, ploty, color='yellow')
-        # plt.xlim(0, 1280)
-        # plt.ylim(720, 0)
-        # plt.show()
+        plt.imshow(result)
+        plt.title('polylines')
+        plt.plot(left_fitx, ploty, color='yellow')
+        plt.plot(right_fitx, ploty, color='yellow')
+        plt.xlim(0, 1280)
+        plt.ylim(720, 0)
+        plt.show()
 
         return left_line_pts, right_line_pts
 

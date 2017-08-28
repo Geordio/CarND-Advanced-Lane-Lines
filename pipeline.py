@@ -46,22 +46,23 @@ def process_image(image):
 
     frame = Frame( l_line, r_line, mtx, dist )
 
-
-## need to determine her how to find them, blind or abased on previous
-
+# call method to return lane line pixels
     lanes_found, leftx_pixel_pos, lefty_pixel_pos, \
     rightx_pixel_pos, righty_pixel_pos = frame.get_raw_line_pixels(image)
     l_line.set_ploty(frame.ploty)
     r_line.set_ploty(frame.ploty)
 
 
+# if a lane was found....
     if lanes_found:
         left_fit = l_line.fit_poly_lines(leftx_pixel_pos, lefty_pixel_pos )
         right_fit = r_line.fit_poly_lines(rightx_pixel_pos, righty_pixel_pos)
         left_fitx = l_line.get_line_poly_pix(left_fit)
         right_fitx = r_line.get_line_poly_pix( right_fit)
+
         l_line.addline(left_fit, left_fitx)
         r_line.addline(right_fit, right_fitx)
+        frame.visualise_poly()
     else:
         print('no lines found')
 
@@ -76,9 +77,9 @@ def process_image(image):
 
 def process_video():
     output_video = 'output.mp4'
-    # clip1 = VideoFileClip("project_video.mp4")
+    clip1 = VideoFileClip("project_video.mp4")
     # clip1 = VideoFileClip("challenge_video.mp4")
-    clip1 = VideoFileClip("harder_challenge_video.mp4")
+    # clip1 = VideoFileClip("harder_challenge_video.mp4")
 
     output_clip = clip1.fl_image(process_image)
     output_clip.write_videofile(output_video, audio=False)
