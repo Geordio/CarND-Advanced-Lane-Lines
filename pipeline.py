@@ -65,52 +65,14 @@ def process_image(image):
     else:
         print('no lines found')
 
-
-
-
-    # left_best = l_line.get_best_fit_x(frame.ploty)
-    # right_best = r_line.get_best_fit_x(frame.ploty)
-
-    # frame.get_car_position(frame, image, l_line, r_line)
-
-
-    # left_rad, right_rad = frame.calculate_radius_real(left_fit, right_fit)
-    # frame.visualise_poly()
-
-
     image_with_marking = frame.create_output_drive_view(frame.image_undistorted, \
                                                         l_line, r_line, frame.Minv)
-        # plt.imshow(self.image_with_marking)
-        # plt.show()
 
-    # else:
 
     return image_with_marking
 
 
 
-    # image_wip = undistort(image, mtx, dist)
-    # image_wip, M, Minv = birdseye(image_wip)
-    #
-    # #TODO reinstate
-    # # plt.imshow(image_wip)
-    # # plt.title('pipeline: birdseye')
-    # image_wip1 = filter_colors_hsv(image_wip)
-    # analyse_histogram(image_wip1)
-    # image_wip2 = filter_white_yellow_hls2(image_wip)
-    # analyse_histogram(image_wip2)
-    # image_wip3 = filter_hls(image_wip)
-    # analyse_histogram(image_wip3)
-    # # image = get_combined_binary(image)
-    # # plt.imshow(image)
-    # # plt.title('pipeline: combined')
-    # # plt.show()
-    # # img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-    # # plt.show()
-    # # find_the_lanes(binary)
-    # find_lanes_blind(image_wip3)
-    # left_fitx, right_fitx, ploty = fit_poly_lines(image_wip1)
-    # return warp_back(image, left_fitx, right_fitx, ploty, Minv)
 
 def process_video():
     output_video = 'output.mp4'

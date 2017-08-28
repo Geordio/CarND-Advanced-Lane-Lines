@@ -182,8 +182,6 @@ Sobel noise:
 
 ![undistorted image](https://github.com/Geordio/CarND-Advanced-Lane-Lines/blob/master/output_images/combined_sobel_noise.png)
 
-And the subsequent output
-![undistorted image](https://github.com/Geordio/CarND-Advanced-Lane-Lines/blob/master/output_images/test1_sobel_going_wrong.jpg)
 
 
 ## Detect lane pixels
@@ -205,7 +203,7 @@ Not that the righthand peak is much lower than the lefthand peak, which is down 
 Birdseye view with the windows overlaid.
 ![undistorted image](https://github.com/Geordio/CarND-Advanced-Lane-Lines/blob/master/output_images/window.png)
 
-If a polyline has previously been fit, 'find_lanes_near' method is used instead. This method uses the previous polyline as a starting point, using the constant value as the basis of a search area.
+When processing a video if a polyline has previously been fitted, 'find_lanes_near' method is used instead. This method uses the previous polyline as a starting point, using the constant value as the basis of a search area.
 
 Note, that at the start of the pipeline, a Line object was created to represent each Line, i.e left and right.
 For the output of the 'get_raw_line_pixels' method, the result is passed to the 'fit_poly_lines' method of each line.
@@ -228,7 +226,7 @@ After this the 'addline' method is called, which calls 'check_plausible_line' pe
         linear_diff_thresh = 0.5
         const_diff_thresh = 300
 
-   this checks that the change in the line position between 2 lines should not be significant.
+   This checks that the change in the line position between 2 lines should not be significant.
 
 
 Foloowing this, the line information is added to an array of most recent lines and teh average taken. (at time of writing the average is taken over 5 lines)

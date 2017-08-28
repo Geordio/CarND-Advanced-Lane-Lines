@@ -116,19 +116,6 @@ class Frame():
         # analyse_histogram(image_wip2)
         self.image_flt_hls_bin = filter_hls(self.image_birdseye)
 
-
-
-
-        # image = get_combined_binary(image)
-        # plt.imshow(image)
-        # plt.title('pipeline: combined')
-        # plt.show()
-        # img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-        # plt.show()
-        # find_the_lanes(binary)
-
-        # first try to find the lines blindly.
-
         if (self.l_line.plausible == True) & (self.r_line.plausible == True) :
             self.lanes_found, self.leftx_pixel_pos, self.lefty_pixel_pos, self.rightx_pixel_pos, self.righty_pixel_pos = self.find_lanes_near(
                 self.image_hsv_bin)
@@ -140,72 +127,6 @@ class Frame():
 
         # self.calculate_radius_real(self.left_fit, self.right_fit)
         return self.lanes_found, self.leftx_pixel_pos, self.lefty_pixel_pos, self.rightx_pixel_pos, self.righty_pixel_pos
-
-
-
-    #
-    # def split_and_thres(self, img, colourspace, thres1=(70, 100), thres2=(70, 100), thres3=(70, 100)):
-    #     image_array = []
-    #     image_titles = []
-    #
-    #     chn1 = img[:, :, 0]
-    #     chn2 = img[:, :, 1]
-    #     chn3 = img[:, :, 2]
-    #     # get the text for each channel
-    #     chn1_txt = colourspace[0]
-    #     chn2_txt = colourspace[1]
-    #     chn3_txt = colourspace[2]
-    #
-    #     image_array.append(chn1)
-    #     image_array.append(chn2)
-    #     image_array.append(chn3)
-    #     image_titles.append(chn1_txt)
-    #     image_titles.append(chn2_txt)
-    #     image_titles.append(chn3_txt)
-    #
-    #     print('chn1')
-    #     image_array.append(self.threshold(chn1, thres1))
-    #     print('chn2')
-    #     image_array.append(self.threshold(chn2, thres2))
-    #     print('chn3')
-    #     image_array.append(self.threshold(chn3, thres3))
-    #     image_titles.append(chn1_txt + ' binary')
-    #     image_titles.append(chn2_txt + ' binary')
-    #     image_titles.append(chn3_txt + ' binary')
-    #
-    #     plot_figure(image_array, image_titles, 2, 3, (64, 64), 'gray')
-    #
-    # def threshold(self, chn, thresh=(15, 100)):
-    #     binary = np.zeros_like(chn)
-    #     print('thres: {}, {}'.format(thresh[0], thresh[1]))
-    #     binary[(chn > thresh[0]) & (chn <= thresh[1])] = 1
-    #
-    #     print(chn)
-    #     return binary
-
-# ## Filter the colours based on a range on the HSV colour space
-#     def filter_colors_hsv(self, img):
-#
-#         img = cv2.cvtColor(img, cv2.COLOR_RGB2HSV)
-#
-#         # TODO reinstate
-#         # plt.imshow(img)
-#         # plt.show()
-#         upper_thres = np.uint8([10, 50, 100])
-#         lower_thres = np.uint8([100, 255, 255])
-#         yellows = cv2.inRange(img, upper_thres, lower_thres)
-#
-#         upper_thres = np.uint8([[0, 0, 200]])
-#         lower_thres = np.uint8([255, 255, 255])
-#         whites = cv2.inRange(img, upper_thres, lower_thres)
-#         yellows_or_whites = yellows | whites
-#         img = cv2.bitwise_and(img, img, mask=yellows | whites)
-#         # ret, img = cv2.threshold(img, 0, 255, cv2.THRESH_BINARY)
-#
-#         img[(img > 0)] = 1
-#
-#         return img[:, :, 0]
-
 
 
 
@@ -269,14 +190,6 @@ class Frame():
         Minv = cv2.getPerspectiveTransform(dst, src)
 
         warped = cv2.warpPerspective(img, M, (width, height), flags=cv2.INTER_LINEAR)
-
-        # images = []
-        # titles = []
-        # images.append(img)
-        # images.append(warped)
-        # titles.append('normal view')
-        # titles.append('birdseye view')
-        # plot_figure(images, titles,1,2)
         return warped, M, Minv
 
 # reverses the birdeye view warp.
