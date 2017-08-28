@@ -101,14 +101,23 @@ I used trial and error to establish the best method for picking out the pixels r
 
 I tried the following colour spaces:
 
--RBG
--HLS
--HSV
--LAB
--YUV
+- RGB
+- HLS
+- HSV
+- LAB
+- YUV
 
 I split the images into their individual layers and applied independant threseholds to each image.
-I tried it against the test_images.
+I tried it against the test images.
+
+Below are sample outpust for each colour space:
+![RBG](https://github.com/Geordio/CarND-Advanced-Lane-Lines/blob/master/output_images/rgb_colour_filtering_test1.png)
+![HLS](https://github.com/Geordio/CarND-Advanced-Lane-Lines/blob/master/output_images/hls_colour_filtering_test1.png)
+![HSV](https://github.com/Geordio/CarND-Advanced-Lane-Lines/blob/master/output_images/hsv_colour_filtering_test1.png)
+![LAB](https://github.com/Geordio/CarND-Advanced-Lane-Lines/blob/master/output_images/lab_colour_filtering_test1.png)
+![YUV](https://github.com/Geordio/CarND-Advanced-Lane-Lines/blob/master/output_images/yuv_colour_filtering_test1.png)
+
+
 I found that in general, if I tuned the thresholds to do a really good extract of the line information on one test image, that it would perform poorly on another.
 The worst cuplrit for this was the test2 image, where the road surface is a different colour.
 
@@ -124,19 +133,41 @@ To try to overcome this, I looked at alternative methods, including filtering on
 This is defined in colorfiltering.py as filter_white_yellow_hsv.
 This method uses the opencv
 This worked well on most sections of road, but struggled with areas of shade. In order to attempt to overcome the issue of shade and sections where the road surface is lighter, I implement 2 sets of thresgolds, and swithc between the 2 is the S channel has a mean value of greater or less than 120.
-i.e
-    if v_mean(img) < 120:
+
+# create a binary representation by filtering of the V channel of HSV colourspace
+def filter_white_yellow_hsv(img):
+
+    img = cv2.cvtColor(img, cv2.COLOR_RGB2HSV)
+    v_mean(img)
+    s_mean(img)
+
+    if v_mean(img) < 150:
+        print('MEAN TRUE')
         upper_thres_yell = np.uint8([10,50,100])
         lower_thres_yell = np.uint8([100,255,255])
         upper_thres_white = np.uint8([[0, 0, 200]])
         lower_thres_white = np.uint8([255, 255, 255])
     else:
-        upper_thres_yell = np.uint8([10,50,220])
+        print('MEAN FALSE')
+        upper_thres_yell = np.uint8([10,50,200])
         lower_thres_yell = np.uint8([100,255,255])
-        upper_thres_white = np.uint8([[0, 0, 200]])
+        upper_thres_white = np.uint8([[0, 0, 220]])
         lower_thres_white = np.uint8([255, 255, 255])
+    yellows = cv2.inRange(img, upper_thres_yell, lower_thres_yell)
+    whites = cv2.inRange(img, upper_thres_white, lower_thres_white)
 
-Note, that to compare the performance, I produced a debug output video that shows the performance, this can be viewed in project_video_debug.mp4
+    img = cv2.bitwise_and(img, img, mask=yellows | whites)
+    # ret, img = cv2.threshold(img, 0, 255, cv2.THRESH_BINARY)
+
+    img[(img > 0)] = 1
+    return img[:, :, 0]
+
+
+Note, that to compare the performance, I produced a debug output video that shows the performance, this can be viewed in output_project_video_debug.mp4
+A sample of this output is shown below:
+![debug sample](https://github.com/Geordio/CarND-Advanced-Lane-Lines/blob/master/output_images/test_str_lines1.jpg)
+
+
 In addition, my experimental methods 'coloumap_sandbox', 'filter_hls' and 'filter_white_yellow_hls2' are defiend in colourfiltering.py
 
 Regarding the gradient of the pixel intensities, I experimented with Sobel, but found that it was not a useful addition to the colour filtering.
