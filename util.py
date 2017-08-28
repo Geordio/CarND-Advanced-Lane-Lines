@@ -18,8 +18,8 @@ def plot_figure(array_to_plot, labels_array, n_rows, n_columns, figuresize=(64,6
         axes[i].axis('off')
 
     # TODO Reinstate
-    # plt.tight_layout()
-    # plt.show()
+    plt.tight_layout()
+    plt.show()
 
 def abs_sobel_thresh(img, orient='x', sobel_kernel=3, thresh=(0, 255)):
     # Apply the following steps to img
@@ -87,7 +87,7 @@ def hls_select(img, thresh=(0, 255)):
 
 
 
-image = mpimg.imread('test_images/straight_lines1.jpg')
+# image = mpimg.imread('test_images/straight_lines1.jpg')
 
 
 # Edit this function to create your own pipeline.

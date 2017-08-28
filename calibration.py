@@ -64,7 +64,7 @@ def corners_unwarp(img, nx, ny, mtx, dist):
 #     return undist
 
 
-
+# calibrate the camera
 def calibrate():
     global grid_x, grid_y, img, mtx, dist
     grid_x = 9
@@ -92,27 +92,30 @@ def calibrate():
 
             # Draw and display the corners
             cv2.drawChessboardCorners(img, (grid_x, grid_y), corners, ret)
-            # write_name = 'corners_found'+str(idx)+'.jpg'
-            # cv2.imwrite(write_name, img)
+            write_name = 'corners_found'+str(idx)+'.jpg'
+            cv2.imwrite(write_name, img)
             cv2.imshow('img', img)
             cv2.waitKey(500)
     cv2.destroyAllWindows()
     # Test  on an sample image
-    img = cv2.imread('camera_cal/calibration2.jpg')
-    cv2.imshow('img', img)
-    cv2.waitKey(0)
+    # img = cv2.imread('camera_cal/calibration2.jpg')
+    # cv2.imshow('img', img)
+    # cv2.waitKey(0)
     img_size = (img.shape[1], img.shape[0])
-    print('image size: {}'.format(img_size))
+    # print('image size: {}'.format(img_size))
     # Do camera calibration given object points and image points
     ret, mtx, dist, rvecs, tvecs = cv2.calibrateCamera(objpoints, imgpoints, img_size, None, None)
 
 
 #calibrate()
 
-def test_undistort():
+# test the undistortion process on
+def test_undistort(img):
+    cv2.imshow('raw', img)
+    cv2.waitKey(0)
     dst = cv2.undistort(img, mtx, dist, None, mtx)
-    #cv2.imwrite('output_images/test_undist.jpg',dst)
-    cv2.imshow('dst', dst)
+    cv2.imwrite('output_images/test_undist.jpg',dst)
+    cv2.imshow('undistorted', dst)
     cv2.waitKey(0)
     return
 
@@ -175,17 +178,22 @@ def load_calibration():
     dist = dist_pickle["dist"]
     return mtx, dist
 
+
+# using the calibration parameters, camera matrix and distortion coefficents,
+# undistort the raw input image
 def undistort(img, mtx, dist):
     # img = cv2.imread('test_images/straight_lines1.jpg')
     undist = cv2.undistort(img, mtx, dist, None, mtx)
-    # cv2.imshow('undist', undist)
-    # cv2.waitKey(0)
+    images = [img, undist]
+    titles = ['raw image', 'undistorted image']
 
-    #TODO REINSTATE
-    # plt.imshow(undist)
-    # plt.title('undistort method')
-    # plt.show()
+    # plot_figure(images,titles, 1,2)
+
     return undist
 
 
 
+
+if __name__ == "__main__":
+    calibrate()
+    test_undistort(cv2.imread('camera_cal/calibration1.jpg'))

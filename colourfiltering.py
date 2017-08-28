@@ -47,12 +47,12 @@ def threshold(chn, thresh=(15, 100)):
     return binary
 
 
-
+# trial different colour space manipulations
 def colourmap_sandbox(image):
     filtered_img = filter_white_yellow_hls2(image)
     plt.imshow(filtered_img)
     plt.show()
-    filtered_img = filter_colors_hsv(image)
+    filtered_img = filter_white_yellow_hsv(image)
     plt.imshow(filtered_img)
     plt.show()
 
@@ -62,35 +62,13 @@ def colourmap_sandbox(image):
     gray = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
     binary = np.zeros_like(gray)
     binary[(gray > thresh[0]) & (gray <= thresh[1])] = 1
-    # plt.imshow(binary,cmap='gray')
-    # plt.show()
-    # cv2.imshow('binary',binary)
-    # cv2.waitKey(0)
-    # image_array = []
-    # image_titles = []
-    # R = image[:, :, 0]
-    # G = image[:, :, 1]
-    # B = image[:, :, 2]
+
     split_and_thres(image, 'RGB', (150, 200), (150, 200), (150, 200))
     hls = cv2.cvtColor(image, cv2.COLOR_RGB2HLS)
     split_and_thres(hls, 'HLS', (0, 20), (200, 255), (180, 255))
-    # H = hls[:, :, 0]
-    # L = hls[:, :, 1]
-    # S = hls[:, :, 2]
-    # image_array.append(H)
-    # image_array.append(L)
-    # image_array.append(S)
-    # image_titles.append('HLS H')
-    # image_titles.append('HLS L')
-    # image_titles.append('HLS S')
-    # plt.imshow(H,cmap='gray')
-    # plt.show()
-    # plt.imshow(L,cmap='gray')
-    # plt.show()
-    # plt.imshow(S,cmap='gray'    )
-    # plt.show()
     hsv = cv2.cvtColor(image, cv2.COLOR_RGB2HSV)
-    split_and_thres(hsv, 'HSV', (0, 10), (0, 170), (50, 170))
+    #50, 170
+    split_and_thres(hsv, 'HSV', (0, 10), (0, 170), (150, 255))
     # H = hsv[:, :, 0]
     # S = hsv[:, :, 1]
     V = hsv[:, :, 2]
@@ -99,93 +77,96 @@ def colourmap_sandbox(image):
     plt.imshow(V)
     plt.show()
     temp = threshold(V, thresh=(200, 255))
-    # temp = cv2.cvtColor(V, cv2.bi)
     plt.imshow(temp)
     plt.show()
-    # image_array.append(H)
-    # image_array.append(S)
-    # image_array.append(V)
-    # image_titles.append('HLS H')
-    # image_titles.append('HLS S')
-    # image_titles.append('HLS V')
-    # binary_V = threshold(V, thresh=(230, 255))
-    # plt.imshow(H,cmap='gray')
-    # plt.title('HSV H')
-    # plt.show()
-    # plt.imshow(S,cmap='gray')
-    # plt.title('HSV S')
-    # plt.show()
-    # plt.imshow(V,cmap='gray'    )
-    # plt.title('HSV V')
-    # plt.show()
+
     lab = cv2.cvtColor(image, cv2.COLOR_RGB2LAB)
     split_and_thres(lab, 'LAB', (150, 255), (0, 255), (20, 140))
-    # L = lab[:, :, 0]
-    # A = lab[:, :, 1]
-    # B = lab[:, :, 2]
-    # image_array.append(L)
-    # image_array.append(A)
-    # image_array.append(B)
-    # image_titles.append('LAB L')
-    # image_titles.append('LAB A')
-    # image_titles.append('LAB B')
-    # plt.imshow(L,cmap='gray')
-    # plt.title('LAB L')
-    # plt.show()
-    # plt.imshow(A,cmap='gray')
-    # plt.title('LAB A')
-    # plt.show()
-    # plt.imshow(B,cmap='gray'    )
-    # plt.title('LAB B')
-    # plt.show()
+
     yuv = cv2.cvtColor(image, cv2.COLOR_RGB2YUV)
     split_and_thres(yuv, 'YUV', (0, 20), (20, 255), (0, 5))
-    # Y = yuv[:, :, 0]
-    # U = yuv[:, :, 1]
-    # V = yuv[:, :, 2]
-    # image_array.append(Y)
-    # image_array.append(U)
-    # image_array.append(V)
-    # image_titles.append('YUV Y')
-    # image_titles.append('YUV U')
-    # image_titles.append('YUV V')
-    # plt.imshow(Y,cmap='gray')
-    # plt.title('YUV Y')
-    # plt.show()
-    # plt.imshow(U,cmap='gray')
-    # plt.title('YUV U')
-    # plt.show()
-    # plt.imshow(V,cmap='gray')
-    # plt.title('YUV V')
-    # plt.show()
-    # plot_figure(image_array, image_titles, 4, 3,(64,64), 'gray')
 
 
-# colourmap_sandbox()
+
 
 
 image_array = []
 image_titles = []
 ##########
 
-def filter_colors_hsv(img):
-    """
-    Convert image to HSV color space and suppress any colors
-    outside of the defined color ranges
-    """
+# create a binary representation by filtering of the S channel of HLS colourspace
+def filter_hls(image):
+    hls = cv2.cvtColor(image, cv2.COLOR_RGB2HLS)
+    # plt.imshow(image)
+    # plt.show()
+    S = hls[:, :, 2]
+    binary = threshold(S, thresh=(180, 255))
+    # plt.imshow(binary)
+    # plt.show()
+    return binary
+
+def v_mean(img):
+    temp = cv2.cvtColor(img, cv2.COLOR_RGB2HSV)
+
+    V = temp[:, :, 2]
+    v_mean_val = V.mean()
+
+    # plt.imshow(V)
+    # plt.show()
+    print('MEAN_V: {}' .format(v_mean_val))
+    return v_mean_val
+
+def s_mean(img):
+    temp = cv2.cvtColor(img, cv2.COLOR_RGB2HSV)
+
+    S = temp[:, :, 1]
+    s_mean_val = S.mean()
+    print('MEAN_S: {}' .format(s_mean_val))
+    #
+    # plt.imshow(S)
+    # plt.show()
+    return s_mean_val
+
+# create a binary representation by filtering of the V channel of HSV colourspace
+def filter_white_yellow_hsv(img):
 
     img = cv2.cvtColor(img, cv2.COLOR_RGB2HSV)
+    v_mean(img)
+    s_mean(img)
+    # upper_thres_yell = np.uint8([10,50,100])
+    # lower_thres_yell = np.uint8([100,255,255])
+    # upper_thres_white = np.uint8([[0, 0, 200]])
+    # lower_thres_white = np.uint8([255, 255, 255])
 
     #TODO reinstate
     # plt.imshow(img)
     # plt.show()
-    upper_thres = np.uint8([10,50,100])
-    lower_thres = np.uint8([100,255,255])
-    yellows = cv2.inRange(img, upper_thres, lower_thres)
+    if v_mean(img) < 150:
+        print('MEAN TRUE')
+        upper_thres_yell = np.uint8([10,50,100])
+        lower_thres_yell = np.uint8([100,255,255])
+        upper_thres_white = np.uint8([[0, 0, 200]])
+        lower_thres_white = np.uint8([255, 255, 255])
+    else:
+        print('MEAN FALSE')
+        upper_thres_yell = np.uint8([10,50,200])
+        lower_thres_yell = np.uint8([100,255,255])
+        upper_thres_white = np.uint8([[0, 0, 220]])
+        lower_thres_white = np.uint8([255, 255, 255])
+    yellows = cv2.inRange(img, upper_thres_yell, lower_thres_yell)
 
-    upper_thres = np.uint8([[0,0,200]])
+    # plt.imshow(yellows)
+    # plt.title('yellow')
+    # plt.show()
+    upper_thres = np.uint8([[0,0,210]])
     lower_thres = np.uint8([255,255,255])
-    whites = cv2.inRange(img, upper_thres, lower_thres)
+    # upper_thres = np.uint8([[0,0,220]])
+    # lower_thres = np.uint8([255,255,255])
+    whites = cv2.inRange(img, upper_thres_white, lower_thres_white)
+
+    # plt.imshow(whites)
+    # plt.title('whites')
+    # plt.show()
     yellows_or_whites = yellows | whites
     img = cv2.bitwise_and(img, img, mask=yellows | whites)
     # ret, img = cv2.threshold(img, 0, 255, cv2.THRESH_BINARY)
@@ -194,6 +175,11 @@ def filter_colors_hsv(img):
 
     return img[:, :, 0]
 
+
+# create a binary representation by filtering of the HLS colourspace on the
+# ranges of yellows and whites.
+# yellows and white ranges are handled independnatly, with an aggregated image created by ORing the
+# 2 seperate filters together
 def filter_white_yellow_hls2(img):
 
     img = cv2.cvtColor(img, cv2.COLOR_RGB2HLS)
@@ -201,16 +187,29 @@ def filter_white_yellow_hls2(img):
     #TODO REINSTATE
     # plt.imshow(img)
     # plt.show()
+    # upper_thres = np.uint8([10,50,100])
+    # lower_thres = np.uint8([100,255,255])
     upper_thres = np.uint8([10,50,100])
     lower_thres = np.uint8([100,255,255])
     yellows = cv2.inRange(img, upper_thres, lower_thres)
+    # plt.imshow(yellows)
+    # plt.title('yellow')
+    # plt.show()
 
-    upper_thres = np.uint8([[15,180,0]])
+    upper_thres = np.uint8([[15,180,80]])
     lower_thres = np.uint8([255,255,255])
+
+
     whites = cv2.inRange(img, upper_thres, lower_thres)
+    # plt.imshow(whites)
+    # plt.title('whites')
+    # plt.show()
+
     yellows_or_whites = yellows | whites
+
     img = cv2.bitwise_and(img, img, mask=yellows | whites)
     ret, img = cv2.threshold(img, 0, 255, cv2.THRESH_BINARY)
+
     image_array = []
     image_titles = []
     image_array.append(img[:, :, 0])
@@ -221,37 +220,18 @@ def filter_white_yellow_hls2(img):
     image_titles.append('b S')
     # plot_figure(image_array, image_titles, 1,3,(64, 64), 'gnuplot')
     # img[(img > 0) & (img <= 255)] = 1
-    return img[:, :, 0]
+    return img#[:, :, 0]
 
 
-
+# create a binary image based on colour filtering and sobel
 def get_combined_binary(image):
-    # hsv = cv2.cvtColor(image, cv2.COLOR_RGB2HLS)
-    # split_and_thres(hsv, 'HSV', (0, 10), (0, 25), (0, 255))
-    # H = hsv[:, :, 0]
-    # L = hsv[:, :, 1]
-    # S = hsv[:, :, 2]
-    # global image_array, image_titles
-    # image_array.append(H)
-    # image_array.append(L)
-    # image_array.append(S)
-    # image_titles.append('HLS H')
-    # image_titles.append('HLS L')
-    # image_titles.append('HLS S')
-    # binary_S = threshold(S, thresh=(0, 255))
-    binary_S = filter_white_yellow_hls2(image)
 
-    #TODO REINSTATE
-    # plt.imshow(binary_S)
-    # print('binary_S: {} ' .format(binary_S))
-    # plt.title("binary s")
-    # plt.show()
-
+    binary_S = filter_hls(image)
 
     sobel_mag = mag_thresh(image, 3, (30, 100))
     # plt.imshow(sobel_mag, cmap ='gray')
     # plt.show()
-    sobel_x = abs_sobel_thresh(image, 'x', 3, (30, 80))
+    sobel_x = abs_sobel_thresh(image, 'x', 3, (30, 100))
     print('sobel: {} ' .format(sobel_x))
     # plt.imshow(sobel_x, cmap ='gray')
     # plt.show()
@@ -260,13 +240,15 @@ def get_combined_binary(image):
     # plt.show()
     image_array = []
     image_titles = []
+    image_array.append(image)
     image_array.append(sobel_mag)
     image_array.append(sobel_x)
     image_array.append(sobel_y)
+    image_titles.append('original')
     image_titles.append('sobel_mag')
     image_titles.append('sobel_x')
     image_titles.append('sobel_y')
-    plot_figure(image_array, image_titles, 1, 3, (64, 64), 'gray')
+    # plot_figure(image_array, image_titles, 2, 2, (64, 64), 'gray')
     color_binary = np.dstack((np.zeros_like(sobel_x), sobel_x, binary_S))
     # plt.imshow(binary_S, cmap ='gray')
     # plt.title('binary')
@@ -291,7 +273,7 @@ def get_combined_binary(image):
     image_titles.append('sobel_x')
     image_titles.append('binary_S')
     image_titles.append('combined_binary')
-    plot_figure(image_array, image_titles, 1, 3, (64, 64), 'gnuplot')
+    # plot_figure(image_array, image_titles, 1, 3, (64, 64), 'gnuplot')
     # cv2.imshow("thingy",combined_binary )
     # cv2.waitKey(0)
     return combined_binary
@@ -300,11 +282,9 @@ def get_combined_binary(image):
 
 # colourmap_sandbox()
 
-
+# analyse the histogram of image and return the poits from where to start searching for lanes (as indicated by the peaks)
 def analyse_histogram(binary_warped):
     histogram = np.sum(binary_warped[binary_warped.shape[0] // 2:, :], axis=0)
-
-
 
     midpoint = np.int(histogram.shape[0] / 2)
     leftx_base = np.argmax(histogram[:midpoint])
@@ -330,36 +310,27 @@ def analyse_histogram(binary_warped):
 
     return leftx_base, rightx_base
 
-def filter_hls(image):
-    hls = cv2.cvtColor(image, cv2.COLOR_RGB2HLS)
-    # H = hls[:, :, 0]
-    # L = hls[:, :, 1]
-    S = hls[:, :, 2]
-    # global image_array, image_titles
-    # image_array.append(H)
-    # image_array.append(L)
-    # image_array.append(S)
-    # image_titles.append('HLS H')
-    # image_titles.append('HLS L')
-    # image_titles.append('HLS S')
-    binary_S = threshold(S, thresh=(180, 255))
-    return binary_S
-
-    # split_and_thres(image, 'RGB', (150, 200), (150, 200), (150, 200))
-    # hls = cv2.cvtColor(image, cv2.COLOR_RGB2HLS)
-    # return split_and_thres(hls, 'HLS', (0, 20), (200, 255), (180, 255))
+#
+# ## filter the inpt image based on the HLS colour space,
+# def filter_hls(image):
+#     hls = cv2.cvtColor(image, cv2.COLOR_RGB2HLS)
+#     S = hls[:, :, 2]
+#
+#     binary_S = threshold(S, thresh=(180, 255))
+#     return binary_S
 
 
 
 def main():
     image = mpimg.imread('test_images/straight_lines1.jpg')
-    image = mpimg.imread('test_images/challenge4.jpg')
-    image = mpimg.imread('test_images/test2.jpg')
-
+    image = mpimg.imread('test_images/challenge.jpg')
+    # image = mpimg.imread('test_images/test2.jpg')
+    # image = mpimg.imread('test_images/test1.jpg')
     #TODO REINSTATE
     # plt.imshow(image)
     # plt.show()
-    colourmap_sandbox(image)
+    # colourmap_sandbox(image)
+    get_combined_binary(image)
 
 
 if __name__ == "__main__":
