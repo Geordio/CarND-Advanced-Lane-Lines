@@ -62,7 +62,7 @@ def process_image(image):
 
         l_line.addline(left_fit, left_fitx)
         r_line.addline(right_fit, right_fitx)
-        frame.visualise_poly()
+        # frame.visualise_poly()
     else:
         print('no lines found')
 
