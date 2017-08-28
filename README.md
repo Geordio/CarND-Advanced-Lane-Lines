@@ -297,7 +297,7 @@ Below is a sample output.
 Note that the left hand lane is not as visible as the right as the weighting of the lines is less that that of the underlying image. (As the righthand lane is dashed, it is easier to see than on the continuous left hand lane.)/
 In hindsight I should have increased the weight.
 
-![annontated output](https://github.com/Geordio/CarND-Advanced-Lane-Lines/blob/master/output_images/sample_aoutput.jpg)
+![annontated output](https://github.com/Geordio/CarND-Advanced-Lane-Lines/blob/master/output_images/sample_output.jpg)
 
 
 
