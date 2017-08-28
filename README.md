@@ -202,11 +202,14 @@ Not that the righthand peak is much lower than the lefthand peak, which is down 
 
 Birdseye view with the windows overlaid.
 
-![undistorted image](https://github.com/Geordio/CarND-Advanced-Lane-Lines/blob/master/output_images/window.png)
+![windows_image](https://github.com/Geordio/CarND-Advanced-Lane-Lines/blob/master/output_images/window.png)
 
 Birdseye view with the windows overlaid and poly lines fitted (red))
 
-![birdseye with poly](https://github.com/Geordio/CarND-Advanced-Lane-Lines/blob/master/output_images/output_with_poly.png)
+
+![poly](https://github.com/Geordio/CarND-Advanced-Lane-Lines/blob/master/output_images/output_with_poly.png)
+
+
 
 When processing a video if a polyline has previously been fitted, 'find_lanes_near' method is used instead. This method uses the previous polyline as a starting point, using the constant value as the basis of a search area.
 
