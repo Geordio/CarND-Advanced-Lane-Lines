@@ -95,7 +95,6 @@ Below is a sample birdseye transform. Note that this image is of a slight left b
 Note that as part of this tranform function, I calculate the inverse transform matrix and store it for use later.
 
 
-
 ## Apply colour transformations and gradients
 
 I used trial and error to establish the best method for picking out the pixels relavent to the lane lines.
