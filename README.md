@@ -204,8 +204,7 @@ Birdseye view with the windows overlaid.
 
 ![windows_image](https://github.com/Geordio/CarND-Advanced-Lane-Lines/blob/master/output_images/window.png)
 
-Birdseye view with the windows overlaid and poly lines fitted (red))
-
+Birdseye view with the windows overlaid and poly lines fitted (red)) Note that this is of a different image than the previous view.
 
 ![poly](https://github.com/Geordio/CarND-Advanced-Lane-Lines/blob/master/output_images/output_with_poly.png)
 
@@ -220,6 +219,7 @@ This method uses the numpy polyfit method to create a line of best fit the the p
 After this the 'addline' method is called, which calls 'check_plausible_line' performs some checking of the plausibility of the caluclated line:
 
 1. checks agains some basic rules about the values of the following thresholds for the quadratic, linear and constant values of the polyline:
+
         quadratic_high_thresh = 1
         quadratic_low_thresh = 0
         linear_high_thresh = 10
@@ -230,6 +230,7 @@ After this the 'addline' method is called, which calls 'check_plausible_line' pe
    These are fairly arbitary values that I decided upon by evaluating some random sections of the road. They should mean that some implausible polyfits are discarded, such as overly curved lines, or horzontal lines.
 
 2. checks the difference against the previous average line of best fit. This time the tresholds are:
+
         quadratic_diff_thresh = 0.005
         linear_diff_thresh = 0.5
         const_diff_thresh = 300
@@ -244,14 +245,16 @@ This ellimninates a lot of the spurious lines that can be detected, especialy on
 
 ### Line radius detection
 
-The Line class is responsible fro detecting the radius of a single line.
+The Line class is responsible for detecting the radius of a single line.
 
 
 The Frame class is then responsible for averaging the radius of the left and right lines.
 
 In the Line class, the 'calculate_radius_real' method calculaes the real world radius. It does this by rescaling the pixel representation of the line, so that they are scaled to match the real world size.
 I determined the metre per pixel values by measuring the line geometry on a birseye image, with the distance between the lines being 3.7 metres, and the length of a dashed line being 3 mtres long.
+
 This gave me:
+
         self.ym_per_pix = 3. / 160  # meters per pixel in y dimension
         self.xm_per_pix = 3.7 / 560  # meteres per pixel in x dimension
 
@@ -325,9 +328,11 @@ A simple mask could have helped to crop unnecessary information from the filtere
 -Implementation hasn't been optimised for performance and currently cant work in real time
 
 My output videos are:
-Output of project_video.mp4 [project video output](https://github.com/Geordio/CarND-Advanced-Lane-Lines/blob/master/output_project_video.mp4)
-Output of challenge_video.mp4 [challenge video output](https://github.com/Geordio/CarND-Advanced-Lane-Lines/blob/master/output_challenge_video.mp4)
+
+Output of project_video.mp4 [output_project_video.mp4](https://github.com/Geordio/CarND-Advanced-Lane-Lines/blob/master/output_project_video.mp4)
+Output of challenge_video.mp4 [output_challenge video.mp4](https://github.com/Geordio/CarND-Advanced-Lane-Lines/blob/master/output_challenge_video.mp4)
 
 (The additional debug video outputs for each are:
+
 [project video output](https://github.com/Geordio/CarND-Advanced-Lane-Lines/blob/master/output_project_video_debug.mp4)
 [challenge video output](https://github.com/Geordio/CarND-Advanced-Lane-Lines/blob/master/output_challenge_video_debug.mp4)
