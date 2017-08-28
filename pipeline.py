@@ -74,7 +74,7 @@ def process_image(image):
 
 
 
-
+# process a video, which in turn call the process_image method
 def process_video():
     output_video = 'output.mp4'
     clip1 = VideoFileClip("project_video.mp4")

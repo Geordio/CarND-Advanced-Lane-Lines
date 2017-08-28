@@ -525,14 +525,6 @@ class Frame():
         plt.title('out_img')
         plt.show()
 
-        #TODO REINSTATE FOR VISUALISATION
-        plt.imshow(result)
-        plt.title('polylines')
-        plt.plot(left_fitx, ploty, color='yellow')
-        plt.plot(right_fitx, ploty, color='yellow')
-        plt.xlim(0, 1280)
-        plt.ylim(720, 0)
-        plt.show()
 
         return left_line_pts, right_line_pts
 

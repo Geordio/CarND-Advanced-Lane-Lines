@@ -109,7 +109,7 @@ def calibrate():
 
 #calibrate()
 
-# test the undistortion process on
+# test the undistortion process on an image
 def test_undistort(img):
     cv2.imshow('raw', img)
     cv2.waitKey(0)
@@ -119,6 +119,8 @@ def test_undistort(img):
     cv2.waitKey(0)
     return
 
+
+# save the calibration parameters for later use
 def save_cal():
     # Save the camera calibration result for later use (we won't worry about rvecs / tvecs)
     dist_pickle = {}
@@ -128,19 +130,7 @@ def save_cal():
     #dst = cv2.cvtColor(dst, cv2.COLOR_BGR2RGB)
 
 
-# # Visualize undistortion
-# f, (ax1, ax2) = plt.subplots(1, 2, figsize=(20,10))
-# ax1.imshow(img)
-# ax1.set_title('Original Image', fontsize=30)
-# ax2.imshow(dst)
-# ax2.set_title('Undistorted Image', fontsize=30)
-
-#### colour stuff
-# img = cv2.imread('camera_cal/calibration2.jpg')
-# binout = abs_sobel_thresh(img, orient='x', thresh= (20,70))
-# cv2.imshow('binout', binout)
-# cv2.waitKey(0)
-
+# tets the unwarp
 def test_unwarp():
     img = cv2.imread('camera_cal/calibration3.jpg')
     unwarped, M = corners_unwarp(img,grid_x, grid_y, mtx, dist)
@@ -171,7 +161,7 @@ def visualise_undistort(img ='test_images/straight_lines1.jpg'):
 
 # visualise_undistort()
 
-
+# load the camera calibration parameters
 def load_calibration():
     dist_pickle = pickle.load( open( "camera_cal/calib.p", "rb" ) )
     mtx = dist_pickle["mtx"]
