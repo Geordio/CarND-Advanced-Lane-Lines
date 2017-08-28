@@ -84,10 +84,12 @@ The birdseye transformation is defined in the get_birdseye method in the Frame c
 The method calls calc_warp_points method to return the source and destination warp points. I defined this as a seprate method as the warp points are calculated relative to the image size, and are not defined as absolute values. This is to make the function independant of camera resolution, an issue that I experienced on the initial lane finding project.
 
 Below is an image marked up with the source points (magenta) and the destination points (red)
+(Note that the destination points are at the top and bottom of teh image and are quite difficult to see)
+
 ![undistorted image](https://github.com/Geordio/CarND-Advanced-Lane-Lines/blob/master/output_images/src_dst.png)
 
 Below is a sample birdseye transform. Note that this image is of a slight left bend so the lines are not quite vertical.
-
+![undistorted image](https://github.com/Geordio/CarND-Advanced-Lane-Lines/blob/master/output_images/birdseye_transform.png)
 Note that as part of this tranform function, I calculate the inverse transform matrix and store it for use later.
 
 
